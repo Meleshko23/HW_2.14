@@ -1,23 +1,17 @@
 package com.example.hw_2_14;
 
-import java.util.Arrays;
-
 public class Main {
 
     public static void main(String[] args) {
-        StringList stringList = new StringListImpl();
-        stringList.add("test1"); // 0
-        stringList.add("test2"); // 1
-        stringList.add("test3"); // 2
-        stringList.add("test4"); // 3
+        IntegerList integerList = new IntegerListImpl();
+        integerList.add(4); // 0
+        integerList.add(10); // 1
+        integerList.add(5); // 2
+        integerList.add(-8); // 3
 
-        stringList.add(3, "test6");
+        integerList.add(3, 5);
 
-        stringList.remove(1);
-
-        System.out.println(Arrays.toString(stringList.toArray()));
-
-        stringList.clear();
-        System.out.println(stringList.size());
+        System.out.println(integerList.contains(10));
+        System.out.println(integerList.contains(11));
     }
 }
