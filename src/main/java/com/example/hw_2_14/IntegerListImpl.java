@@ -1,12 +1,13 @@
 package com.example.hw_2_14;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class IntegerListImpl implements IntegerList {
 
     private static final int INITIAL_SIZE = 15;
 
-    private final Integer[] data;
+    private Integer[] data;
 
     private int capacity;
 
@@ -25,6 +26,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public Integer add(Integer item) {
+        growIfNeeded();
         if (capacity >= data.length) {
             throw new IllegalArgumentException("Список полон!");
         }
@@ -36,6 +38,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public Integer add(int index, Integer item) {
+        growIfNeeded();
         if (capacity >= data.length) {
             throw new IllegalArgumentException("Список полон!");
         }
@@ -195,15 +198,49 @@ public class IntegerListImpl implements IntegerList {
     }
 
     private void sort() {
-        for (int i = 0; i < capacity; i++) {
-            int temp = data[i];
-            int j = i;
-            while (j > 0 && data[j - 1] >= temp) {
-                data[j] = data[j - 1];
-                j--;
-            }
-            data[j] = temp;
+        quickSort(data, 0, data.length - 1);
+    }
+
+    private void quickSort(Integer[] data, int begin, int end) {
+        if (begin < end) {
+            int partitionIndex = partition(data, begin, end);
+
+            quickSort(data, begin, partitionIndex - 1);
+            quickSort(data, partitionIndex + 1, end);
         }
+    }
+
+    private int partition(Integer[] data, int begin, int end) {
+        int pivot = data[end];
+        int i = (begin - 1);
+
+        for (int j = begin; j < end; j++) {
+            if (data[j] <= pivot) {
+                i++;
+
+                swapElements(data, i, j);
+            }
+        }
+
+        swapElements(data, i + 1, end);
+        return i + 1;
+    }
+
+    private void swapElements(Integer[] data, int i1, int i2) {
+        int temp = data[i1];
+        data[i1] = data[i2];
+        data[i2] = temp;
+    }
+
+
+    private void growIfNeeded() {
+        if (capacity == data.length) {
+            grow();
+        }
+    }
+
+    private void grow() {
+        data = Arrays.copyOf(data, capacity + capacity / 2);
     }
 
 }
